@@ -1,7 +1,0 @@
-/include/ "system-conf.dtsi"
-/ {
-	model = "Enclustra MA-XU3-3EG-2I-D11 SOM";
-};
-#include "zynqmp_enclustra_common.dtsi"
-#include "zynqmp_enclustra_mars_st3.dtsi"
-#include "zynqmp_enclustra_mars_xu3.dtsi"
