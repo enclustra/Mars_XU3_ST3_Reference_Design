@@ -1,5 +1,5 @@
-# ----------------------------------------------------------------------------------
-# Copyright (c) 2022 by Enclustra GmbH, Switzerland.
+# ----------------------------------------------------------------------------------------------------
+# Copyright (c) 2024 by Enclustra GmbH, Switzerland.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this hardware, software, firmware, and associated documentation files (the
@@ -17,7 +17,7 @@
 # HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 # PRODUCT OR THE USE OR OTHER DEALINGS IN THE PRODUCT.
-# ----------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------
 
 create_bd_design $module
 
@@ -46,6 +46,8 @@ set_property -dict [ list \
   CONFIG.PSU__QSPI__PERIPHERAL__DATA_MODE {x4} \
   CONFIG.PSU__SD0__PERIPHERAL__ENABLE {1} \
   CONFIG.PSU__SD0__SLOT_TYPE {eMMC} \
+  CONFIG.PSU__SD0__PERIPHERAL__IO {MIO 13 .. 22} \
+  CONFIG.PSU__SD0__DATA_TRANSFER_MODE {8Bit} \
   CONFIG.PSU__SD1__PERIPHERAL__ENABLE {1} \
   CONFIG.PSU__SD1__SLOT_TYPE {SD 2.0} \
   CONFIG.PSU__SD1__PERIPHERAL__IO {MIO 46 .. 51} \
@@ -60,6 +62,7 @@ set_property -dict [ list \
   CONFIG.PSU__CRL_APB__PL1_REF_CTRL__FREQMHZ {50} \
   CONFIG.PSU__GPIO0_MIO__PERIPHERAL__ENABLE {1} \
   CONFIG.PSU__GPIO1_MIO__PERIPHERAL__ENABLE {1} \
+  CONFIG.PSU__CRF_APB__GPU_REF_CTRL__SRCSEL {VPLL} \
   CONFIG.PSU_MIO_0_PULLUPDOWN {disable} \
   CONFIG.PSU_MIO_1_PULLUPDOWN {disable} \
   CONFIG.PSU_MIO_2_PULLUPDOWN {disable} \
@@ -191,6 +194,7 @@ set_property -dict [ list \
   CONFIG.PSU_MIO_21_PULLUPDOWN {disable} \
   CONFIG.PSU__SD0__PERIPHERAL__IO {MIO 13 .. 22} \
   CONFIG.PSU__SD0__DATA_TRANSFER_MODE {8Bit} \
+  CONFIG.PSU__USE__IRQ0  {1} \
 ] [get_bd_cells zynq_ultra_ps_e]
 set_property -dict [ list \
   CONFIG.PSU__I2C1__PERIPHERAL__ENABLE {1} \
@@ -214,6 +218,7 @@ connect_bd_net [get_bd_pins zynq_ultra_ps_e/maxihpm0_lpd_aclk] [get_bd_pins zynq
 create_bd_cell -type ip -vlnv xilinx.com:ip:proc_sys_reset:5.0 ps_sys_rst
 connect_bd_net [get_bd_pins ps_sys_rst/slowest_sync_clk] [get_bd_pins zynq_ultra_ps_e/pl_clk0]
 connect_bd_net [get_bd_pins ps_sys_rst/ext_reset_in] [get_bd_pins zynq_ultra_ps_e/pl_resetn0]
+connect_bd_net [get_bd_pins system_management_wiz/ip2intc_irpt] [get_bd_pins zynq_ultra_ps_e/pl_ps_irq0]
 set IIC_USER [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:iic_rtl:1.0 IIC_USER ]
 connect_bd_intf_net [get_bd_intf_ports IIC_USER] [get_bd_intf_pins zynq_ultra_ps_e/IIC_1]
 
